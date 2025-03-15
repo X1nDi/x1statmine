@@ -12,6 +12,8 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.ResultSet;
 
+import java.io.File;
+
 public class X1statmine extends JavaPlugin implements Listener {
     private Connection connection;
 
@@ -42,7 +44,17 @@ public class X1statmine extends JavaPlugin implements Listener {
 
     private void setupDatabase() {
         try {
-            connection = DriverManager.getConnection("jdbc:sqlite:mine_stats.db");
+            // Создаем папку плагина, если она не существует
+            File dataFolder = getDataFolder();
+            if (!dataFolder.exists()) {
+                dataFolder.mkdirs();
+            }
+
+            // Указываем путь к базе данных в папке плагина
+            File databaseFile = new File(dataFolder, "mine_stats.db");
+            connection = DriverManager.getConnection("jdbc:sqlite:" + databaseFile.getAbsolutePath());
+
+            // Создаем таблицу, если она не существует
             connection.createStatement().execute("CREATE TABLE IF NOT EXISTS player_stats (player_name TEXT PRIMARY KEY, blocks_mined INTEGER)");
         } catch (SQLException e) {
             e.printStackTrace();
