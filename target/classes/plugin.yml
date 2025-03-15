@@ -1,0 +1,11 @@
+name: x1statmine
+version: '1.0-SNAPSHOT'
+main: ru.x1ndi.x1statmine.X1statmine
+api-version: '1.20'
+commands:
+  statmine-reset:
+    description: Сбросить статистику добытых блоков
+    usage: /statmine-reset
+    permission: statmine.reset
+
+depend: ["PlaceholderAPI"]
